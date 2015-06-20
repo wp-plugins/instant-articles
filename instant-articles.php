@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: Instant Articles
+Plugin Name: WordPress Instant Articles
 Plugin URI: http://wpinstant.io
 Description: Increase your site performance with DNS prefetching and HTML5 prerender
 Version: 1.0
