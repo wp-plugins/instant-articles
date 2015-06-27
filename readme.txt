@@ -1,8 +1,8 @@
 === WordPress Instant Articles ===
 Tags: dns-prefetch, prerender, prefetch, seo, speed, optimization, performance, optimize
 Requires at least: 4.0
-Tested up to: 4.2.1
-Stable tag: 1.0
+Tested up to: 4.2.2
+Stable tag: 1.1
 License: GPL2
 Contributors: khromov, titanas
 
@@ -56,6 +56,9 @@ https://www.chromium.org/developers/design-documents/prerender
 1. Administration screen
 
 == Changelog ==
+
+= 1.1 =
+* Fixed dashboard icon being too big: https://wordpress.org/support/topic/dashboard-logo-icon-issue
 
 = 1.0 =
 * Initial release
