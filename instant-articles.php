@@ -3,8 +3,8 @@
 Plugin Name: Instant Articles
 Plugin URI: http://wpinstant.io
 Description: Increase your site performance with DNS prefetching and HTML5 prerender
-Version: 1.1
-Author: titanas, khromov
+Version: 1.2
+Author: khromov, titanas
 Author URI: http://titan.as
 */
 
@@ -20,9 +20,8 @@ class WPInstantArticles_Plugin {
 
 	function __construct() {
 		$modules = array(
-				'dns-prefetch' => 'WPInstantArticles_DNS_Prefetch',
-				'prerender' => 'WPInstantArticles_PreRender',
-				'pro/prerender-archives' => 'WPInstantArticles_PreRender_Archives'
+			'dns-prefetch' => 'WPInstantArticles_DNS_Prefetch',
+			'prerender' => 'WPInstantArticles_PreRender'
 		);
 
 		$modules_directory = plugin_dir_path(__FILE__) . 'modules/';
@@ -48,24 +47,3 @@ class WPInstantArticles_Plugin {
 	}
 }
 $wp_instant_articles = new WPInstantArticles_Plugin();
-
-/**
- * TODO: Move to better place
- * TODO: Validation in CMB2
- */
-add_filter('wpinstant_dns_prefetch_domains', 'wpinstant_dns_prefetch_domains');
-function wpinstant_dns_prefetch_domains($domains) {
-	$domains = array();
-	foreach (WPIAC::cmb2_get_option('wpinstant_options', 'dns-prefetch', array()) as $domain) {
-
-		//If this looks like a naked domain name, prepend http:// so we can get through parse_url
-		if(!preg_match('/^(http|https)/', $domain)) {
-			$domain = "http://{$domain}";
-		}
-		$parsed = parse_url($domain);
-		if(isset($parsed['host'])) {
-			$domains[] = '//' . $parsed['host'];
-		}
-	}
-	return $domains;
-}

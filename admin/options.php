@@ -41,7 +41,7 @@ class WPInstantArticles_Admin {
 		add_action( 'admin_init', array( $this, 'init' ) );
 		add_action( 'admin_menu', array( $this, 'add_options_page' ) );
 		add_action( 'cmb2_init', array( $this, 'add_options_page_metabox' ) );
-		add_action( 'admin_enqueue_scripts', array($this, 'admin_enqueue_scripts'));
+		add_action( 'admin_head', array($this, 'admin_head'));
 	}
 
 	/**
@@ -55,14 +55,16 @@ class WPInstantArticles_Admin {
 	/**
 	 * Print admin css
 	 */
-	public function admin_enqueue_scripts($hook) {
-
+	public function admin_head() {
 		//General style for all admin pages
 		echo WPInstantArticles_Common::template('admin-global-css');
 
-		//Special style for Instant Articles page
-		if($hook === 'toplevel_page_wpinstant_options') {
-			echo WPInstantArticles_Common::template('admin-css');
+		//Sanity check
+		if($screen = get_current_screen()) {
+			//Special style for Instant Articles page
+			if($screen->base === 'toplevel_page_wpinstant_options') {
+				echo WPInstantArticles_Common::template('admin-css');
+			}
 		}
 	}
 
@@ -146,11 +148,18 @@ class WPInstantArticles_Admin {
 				'type' => 'checkbox'
 		));
 
+		$cmb->add_field( array(
+				'name' => 'Pre-render sticky posts',
+				'desc' => 'Pre-render posts marked as "sticky"  (max 2 posts), read more in the ' . '<a target="_blank" href="https://codex.wordpress.org/Sticky_Posts">Codex</a>.',
+				'id'   => 'prerender_sticky_posts',
+				'type' => 'checkbox'
+		));
+
 		//TODO: Not fired properly on form update, needs a reload to work
 		//if(WPIAC::cmb2_get_option('wpinstant_options', 'prerender_pagination', false)) :
 			$cmb->add_field( array(
 					'name' => '&nbsp;',
-					'desc' => 'This feature may increase server load.',
+					'desc' => 'Prerendering may slightly increase server load.',
 					'id'   => '_notification_prerender_pagination_enabled',
 					'type' => 'notification',
 					'classes' => array('update-nag')
@@ -198,7 +207,6 @@ class WPInstantArticles_Admin {
 
 		throw new Exception( 'Invalid property: ' . $field );
 	}
-
 }
 
 /**
